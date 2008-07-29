@@ -1,1 +1,15 @@
 v2rover is the project to explore software engineering properly, and develop a better rover according to the specifications of the ICFP 2008 Programming Contest.
+
+Directories hold information and code
+src - source top level
+src/test - test cases
+src/rover - rover source
+src/mapgen - map generator
+src/replay - replay/debugging environment
+
+info - information pertaining to the development
+info/task - source material from the challenge
+
+data - information produced as an end product of various applications
+data/map - map generator output
+data/log - log data from a rover run for use by replay/debugger
