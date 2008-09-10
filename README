@@ -2,10 +2,14 @@ v2rover is the project to explore software engineering properly, and develop a b
 
 Directories hold information and code
 src - source top level
-src/test - test cases
 src/rover - rover source
 src/mapgen - map generator
 src/replay - replay/debugging environment
+
+test - test cases top level
+test/rover - rover test cases
+test/mapgen - map generator test cases
+test/replay - replay/debugging test cases
 
 info - information pertaining to the development
 info/task - source material from the challenge
