@@ -11,7 +11,8 @@
 	 add-boulders
 	 set-vehicle-run
 	 set-enemy-run
-	 set-enemies-run)
+	 set-enemies-run
+	 set-run)
 
 (define set-params 
   (lambda (maxSpeed accel brake turn hardTurn rotAccel frontView rearView)
@@ -64,6 +65,13 @@
 				 (* max-speed (random))
 				 (* max-view (random)))))))
 
+(define set-run
+  (lambda (vehicle-run enemies-run)
+    (define h (make-hash))
+    (hash-set! h "vehicle" vehicle-run)
+    (hash-set! h "enemies" enemies-run)
+    h))
+
 
 (define set-vehicle-params set-params)
 
@@ -78,3 +86,11 @@
     (define o (open-output-string))
     (write p o)
     (get-output-string o)))
+
+(define generator
+  (lambda (filename)
+    (let ([file (open-input-file filename)])
+    (display (read-line file)) (newline)
+    (display "that's it")
+    (close-input-port o))
+    
