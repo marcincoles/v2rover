@@ -86,21 +86,3 @@
     (define o (open-output-string))
     (write p o)
     (get-output-string o)))
-
-(define generator
-  (lambda (filename)
-    (let ([file (open-input-file filename)]
-          [result (make-hash)])
-      (let loop ()
-        (let ([line (read-line file)])
-          (cond
-            [(eof-object? line)
-             (printf "that's it ~n")]
-            [else 
-             (printf "> ~a <~n" line)
-             (let ([p (regexp-split " " line)])
-               (hash-set! result (first p) (second p)))
-             (loop)])))
-      (close-input-port file)
-      result)))
-    

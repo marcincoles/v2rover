@@ -1,0 +1,9 @@
+size 200
+time-limit 30
+vehicle-params 100.0 10.0 5.0 12.0 24.0 9.0 50.0 25.0
+martian-params 90.0 9.0 5.0 12.0 24.0 9.0 50.0 25.0
+craters 50 1.5 10
+boulders 100 1.0 5.5
+runs 2
+vehicle-run -11.3 -105.22 -32.1 enemies-run 5 200 10 2
+vehicle-run 98.1 125 12.1 enemies-run 10 100 12 3
