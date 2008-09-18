@@ -3,12 +3,13 @@
 ;generates maps for test purposes
 
 (require (planet "json.ss" ("dherman" "json.plt" 1 1)))
+(require (lib "string.ss"))
 
 (provide set-vehicle-params 
 	 set-martian-params 
 	 data->json 
-	 add-craters 
-	 add-boulders
+	 set-craters 
+	 set-boulders
 	 set-vehicle-run
 	 set-enemy-run
 	 set-enemies-run
@@ -27,7 +28,7 @@
     (hash-set! p "rearView" rearView)
     p))
 
-(define add-obstacles
+(define set-obstacles
 ;; obstacles include craters and boulders
   (lambda (number-of-obstacles min-rad max-rad quadrant-size)
     (build-list number-of-obstacles 
@@ -66,20 +67,31 @@
 				 (* max-view (random)))))))
 
 (define set-run
-  (lambda (vehicle-run enemies-run)
+  (lambda (x y dir number-of-martians quadrant-size max-speed max-view)
     (define h (make-hash))
-    (hash-set! h "vehicle" vehicle-run)
-    (hash-set! h "enemies" enemies-run)
+    (hash-set! h "vehicle" (set-vehicle-run x y dir))
+    (hash-set! h "enemies" (set-enemies-run number-of-martians quadrant-size max-speed max-view))
     h))
-
+  
+;(define set-runs
+;  (lambda (x y dir number-of-martians quadrant-size max-speed max-view)
+;    (if (
 
 (define set-vehicle-params set-params)
 
 (define set-martian-params set-params)
 
-(define add-craters add-obstacles)
+(define set-craters set-obstacles)
 
-(define add-boulders add-obstacles)
+(define set-boulders set-obstacles)
+
+(define set-size
+  (lambda (s)
+    s))
+
+(define set-time-limit
+  (lambda (s)
+    s))
 
 (define data->json
   (lambda (p)
@@ -98,8 +110,14 @@
              (printf "that's it ~n")]
             [else 
              (printf "> ~a <~n" line)
-             (let ([p (regexp-split " " line)])
-               (hash-set! result (first p) (second p)))
+             
+             (let* ([params (regexp-split " " line)]
+                    [x (first params)]
+                    [param-name (regexp-replace #px"(-)(\\w)(\\w+)$" x (lambda (all one two three) (string-append (string-upcase two) three)))]
+                    [function-name (string-append "set-" x)]
+                    [function-string (string-append "(" (regexp-replace #px"^(\\w)+(-[\\w\\d]+)*" line function-name) ")")])
+               
+               (hash-set! result param-name (eval-string function-string)))
              (loop)])))
       (close-input-port file)
       result)))
