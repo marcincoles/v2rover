@@ -115,10 +115,19 @@
                     [x (first params)]
                     [param-name (regexp-replace #px"(-)(\\w)(\\w+)$" x (lambda (all one two three) (string-append (string-upcase two) three)))]
                     [function-name (string-append "set-" x)]
+                    ;function string replaces the name of the parameter starting the line, with the appropriate function name
                     [function-string (string-append "(" (regexp-replace #px"^(\\w)+(-[\\w\\d]+)*" line function-name) ")")])
-               
-               (hash-set! result param-name (eval-string function-string)))
+               (if (string=? x "run")
+                   (hash-set! result "runs" (if (hash-ref result "runs" (lambda () (display "no runs yet") (newline) #f))
+                                                (append (hash-ref result "runs") (eval-string function-string))
+                                                (list (eval-string function-string))))
+                   (hash-set! result param-name (eval-string function-string))))
              (loop)])))
       (close-input-port file)
       result)))
     
+;(hash-for-each x (lambda (k v)
+;                     (printf "x[~a] is a ~a => json? ~a~n" k (cond
+;                                                               [(hash? v) "hash"]
+;                                                               [(list? v) "list"]
+;                                                               [else "other"]) (json? v))))
